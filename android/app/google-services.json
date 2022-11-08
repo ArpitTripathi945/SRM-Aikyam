@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "856824866636",
+    "firebase_url": "https://srmthon-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "srmthon",
     "storage_bucket": "srmthon.appspot.com"
   },
