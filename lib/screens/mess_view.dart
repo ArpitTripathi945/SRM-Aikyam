@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:srmthon/models/user_model.dart';
+import 'package:srmthon/routes.dart';
 import 'package:srmthon/screens/profile_view.dart';
 
 import 'package:srmthon/spinner.dart';
@@ -25,6 +26,9 @@ class _MessViewState extends State<MessView> {
       FirebaseFirestore.instance.collection('messmenu');
   final CollectionReference userref =
       FirebaseFirestore.instance.collection('users');
+  final Uri _evarsity = Uri.parse('https://evarsity.srmist.edu.in/srmsip/');
+  final Uri _pass = Uri.parse('https://www.srmimthostel.net/olms/');
+  final Uri _grievances = Uri.parse('http://srmupmaintenance.in/maintenance');
 
   @override
   void initState() {
@@ -62,7 +66,7 @@ class _MessViewState extends State<MessView> {
                       maxRadius: 55.0,
                       child: CircleAvatar(
                         maxRadius: 50.0,
-                        backgroundColor: Colors.yellowAccent,
+                        backgroundColor: Color.fromARGB(255, 195, 201, 215),
                         child: Icon(
                           Icons.person,
                           size: 70.0,
@@ -75,7 +79,9 @@ class _MessViewState extends State<MessView> {
                 ListTile(
                   title: Text("Evarsity"),
                   trailing: Icon(Icons.open_in_browser_rounded),
-                  onTap: () {},
+                  onTap: () {
+                    _launchEvarsity();
+                  },
                 ),
                 Divider(
                   thickness: 0.5,
@@ -83,13 +89,9 @@ class _MessViewState extends State<MessView> {
                 ListTile(
                   title: Text("Leave/Out Pass"),
                   trailing: Icon(Icons.time_to_leave_rounded),
-                ),
-                Divider(
-                  thickness: 0.5,
-                ),
-                ListTile(
-                  title: Text("Medical Emergancy"),
-                  trailing: Icon(Icons.local_hospital_rounded),
+                  onTap: () {
+                    _launchPass();
+                  },
                 ),
                 Divider(
                   thickness: 0.5,
@@ -97,8 +99,19 @@ class _MessViewState extends State<MessView> {
                 ListTile(
                   title: Text("Grievances"),
                   trailing: Icon(Icons.task_rounded),
-                  onTap: () {},
+                  onTap: () {
+                    _launchGrievances();
+                  },
                 ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                    title: Text("Medical Emergancy"),
+                    trailing: Icon(Icons.local_hospital_rounded),
+                    onTap: (() {
+                      Navigator.pushNamed(context, MyRoutes.medicalviewRoute);
+                    })),
                 Divider(
                   thickness: 0.5,
                 ),
@@ -109,11 +122,6 @@ class _MessViewState extends State<MessView> {
                 ),
                 Divider(
                   thickness: 0.5,
-                ),
-                ListTile(
-                  title: Text("About Us"),
-                  trailing: Icon(Icons.people_outline_rounded),
-                  onTap: () {},
                 ),
               ],
             ),
@@ -219,5 +227,23 @@ class _MessViewState extends State<MessView> {
                     }))
           ])),
     );
+  }
+
+  Future<void> _launchEvarsity() async {
+    if (!await launchUrl(_evarsity, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_evarsity';
+    }
+  }
+
+  Future<void> _launchPass() async {
+    if (!await launchUrl(_pass, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_pass';
+    }
+  }
+
+  Future<void> _launchGrievances() async {
+    if (!await launchUrl(_grievances, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_grievances';
+    }
   }
 }

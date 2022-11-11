@@ -4,4 +4,5 @@ class MyRoutes {
   static String cartviewRoute = "/cartview";
   static String restviewRoute = "/restview";
   static String messviewRoute = "/messview";
+  static String medicalviewRoute = "/medicalviewRoute";
 }

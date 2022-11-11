@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:srmthon/routes.dart';
 import 'package:srmthon/screens/home_view.dart';
 import 'package:srmthon/screens/login_view.dart';
+import 'package:srmthon/screens/medical_view.dart';
 import 'package:srmthon/screens/splash_view.dart';
 import 'firebase_options.dart';
 
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         MyRoutes.loginviewRoute: (context) => LoginView(),
+        MyRoutes.medicalviewRoute: (context) => MedicalView(),
       },
     );
   }
