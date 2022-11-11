@@ -5,7 +5,11 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:srmthon/models/user_model.dart';
+import 'package:srmthon/screens/profile_view.dart';
+
 import 'package:srmthon/spinner.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessView extends StatefulWidget {
   const MessView({super.key});
@@ -16,8 +20,21 @@ class MessView extends StatefulWidget {
 
 class _MessViewState extends State<MessView> {
   User? user = FirebaseAuth.instance.currentUser;
+  UserModel currentuser = UserModel();
   final CollectionReference ref =
       FirebaseFirestore.instance.collection('messmenu');
+  final CollectionReference userref =
+      FirebaseFirestore.instance.collection('users');
+
+  @override
+  void initState() {
+    super.initState();
+    userref.doc(user!.uid).get().then((value) {
+      this.currentuser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -26,7 +43,81 @@ class _MessViewState extends State<MessView> {
             backgroundColor: Color.fromARGB(255, 12, 77, 162),
             title: Text("SRM - Mess"),
           ),
-          drawer: Drawer(),
+          drawer: Drawer(
+            backgroundColor: Color.fromARGB(255, 195, 201, 215),
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 12, 77, 162),
+                  ),
+                  accountName: Text('${currentuser.name}'),
+                  accountEmail: Text(
+                      '${currentuser.block}' '-' + '${currentuser.roomno}'),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    maxRadius: 59.0,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      maxRadius: 55.0,
+                      child: CircleAvatar(
+                        maxRadius: 50.0,
+                        backgroundColor: Colors.yellowAccent,
+                        child: Icon(
+                          Icons.person,
+                          size: 70.0,
+                          color: Color.fromARGB(255, 15, 17, 32),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text("Evarsity"),
+                  trailing: Icon(Icons.open_in_browser_rounded),
+                  onTap: () {},
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("Leave/Out Pass"),
+                  trailing: Icon(Icons.time_to_leave_rounded),
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("Medical Emergancy"),
+                  trailing: Icon(Icons.local_hospital_rounded),
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("Grievances"),
+                  trailing: Icon(Icons.task_rounded),
+                  onTap: () {},
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("My Orders"),
+                  trailing: Icon(Icons.list_rounded),
+                  onTap: () {},
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("About Us"),
+                  trailing: Icon(Icons.people_outline_rounded),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
           backgroundColor: Color.fromARGB(255, 195, 201, 215),
           body: Column(children: [
             SizedBox(
