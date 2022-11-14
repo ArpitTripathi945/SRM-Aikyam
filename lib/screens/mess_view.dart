@@ -107,7 +107,7 @@ class _MessViewState extends State<MessView> {
                   thickness: 0.5,
                 ),
                 ListTile(
-                    title: Text("Medical Emergancy"),
+                    title: Text("Emergancy Contacts"),
                     trailing: Icon(Icons.local_hospital_rounded),
                     onTap: (() {
                       Navigator.pushNamed(context, MyRoutes.medicalviewRoute);
