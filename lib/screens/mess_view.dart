@@ -5,7 +5,12 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:srmthon/models/user_model.dart';
+import 'package:srmthon/routes.dart';
+import 'package:srmthon/screens/profile_view.dart';
+
 import 'package:srmthon/spinner.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessView extends StatefulWidget {
   const MessView({super.key});
@@ -16,8 +21,24 @@ class MessView extends StatefulWidget {
 
 class _MessViewState extends State<MessView> {
   User? user = FirebaseAuth.instance.currentUser;
+  UserModel currentuser = UserModel();
   final CollectionReference ref =
       FirebaseFirestore.instance.collection('messmenu');
+  final CollectionReference userref =
+      FirebaseFirestore.instance.collection('users');
+  final Uri _evarsity = Uri.parse('https://evarsity.srmist.edu.in/srmsip/');
+  final Uri _pass = Uri.parse('https://www.srmimthostel.net/olms/');
+  final Uri _grievances = Uri.parse('http://srmupmaintenance.in/maintenance');
+
+  @override
+  void initState() {
+    super.initState();
+    userref.doc(user!.uid).get().then((value) {
+      this.currentuser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -26,7 +47,85 @@ class _MessViewState extends State<MessView> {
             backgroundColor: Color.fromARGB(255, 12, 77, 162),
             title: Text("SRM - Mess"),
           ),
-          drawer: Drawer(),
+          drawer: Drawer(
+            backgroundColor: Color.fromARGB(255, 195, 201, 215),
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 12, 77, 162),
+                  ),
+                  accountName: Text('${currentuser.name}'),
+                  accountEmail: Text(
+                      '${currentuser.block}' '-' + '${currentuser.roomno}'),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    maxRadius: 59.0,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      maxRadius: 55.0,
+                      child: CircleAvatar(
+                        maxRadius: 50.0,
+                        backgroundColor: Color.fromARGB(255, 195, 201, 215),
+                        child: Icon(
+                          Icons.person,
+                          size: 70.0,
+                          color: Color.fromARGB(255, 15, 17, 32),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text("Evarsity"),
+                  trailing: Icon(Icons.open_in_browser_rounded),
+                  onTap: () {
+                    _launchEvarsity();
+                  },
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("Leave/Out Pass"),
+                  trailing: Icon(Icons.time_to_leave_rounded),
+                  onTap: () {
+                    _launchPass();
+                  },
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("Grievances"),
+                  trailing: Icon(Icons.task_rounded),
+                  onTap: () {
+                    _launchGrievances();
+                  },
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                    title: Text("Emergancy Contacts"),
+                    trailing: Icon(Icons.local_hospital_rounded),
+                    onTap: (() {
+                      Navigator.pushNamed(context, MyRoutes.medicalviewRoute);
+                    })),
+                Divider(
+                  thickness: 0.5,
+                ),
+                ListTile(
+                  title: Text("My Orders"),
+                  trailing: Icon(Icons.list_rounded),
+                  onTap: () {},
+                ),
+                Divider(
+                  thickness: 0.5,
+                ),
+              ],
+            ),
+          ),
           backgroundColor: Color.fromARGB(255, 195, 201, 215),
           body: Column(children: [
             SizedBox(
@@ -128,5 +227,23 @@ class _MessViewState extends State<MessView> {
                     }))
           ])),
     );
+  }
+
+  Future<void> _launchEvarsity() async {
+    if (!await launchUrl(_evarsity, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_evarsity';
+    }
+  }
+
+  Future<void> _launchPass() async {
+    if (!await launchUrl(_pass, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_pass';
+    }
+  }
+
+  Future<void> _launchGrievances() async {
+    if (!await launchUrl(_grievances, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $_grievances';
+    }
   }
 }

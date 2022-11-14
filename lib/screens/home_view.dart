@@ -4,10 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:srmthon/global.dart';
 import 'package:srmthon/notificationservice/local_notification_service.dart';
-import 'package:srmthon/screens/cart_view.dart';
+
 import 'package:srmthon/screens/mess_view.dart';
 import 'package:srmthon/screens/profile_view.dart';
 import 'package:srmthon/screens/rest_view.dart';
+import 'package:srmthon/screens/review_cart_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -22,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
     MessView(),
     RestView(),
     ProfileView(),
-    CartView(),
+    ReviewCartView(),
   ];
   @override
   void initState() {
