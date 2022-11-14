@@ -1,13 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:srmthon/notificationservice/local_notification_service.dart';
 import 'package:srmthon/routes.dart';
 import 'package:srmthon/screens/home_view.dart';
 import 'package:srmthon/screens/login_view.dart';
 import 'package:srmthon/screens/splash_view.dart';
 import 'firebase_options.dart';
 
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
+
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  LocalNotificationService.initialize();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: "SRMthon",
@@ -31,7 +43,6 @@ class MyApp extends StatelessWidget {
               return const Center(child: Text('Something went wrong!'));
             }
 
-            //display application
             if (snapshot.connectionState == ConnectionState.done) {
               final User? user = FirebaseAuth.instance.currentUser;
               if (user != null) {

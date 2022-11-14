@@ -39,6 +39,8 @@ dependencies:
   email_validator: '^2.1.16'
   intl: ^0.17.0
   fluttertoast: ^8.0.9
+  flutter_local_notifications: ^9.2.0
+  firebase_messaging: ^14.1.0
 
 dev_dependencies:
   flutter_test:
