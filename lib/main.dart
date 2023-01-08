@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
 import 'package:srmthon/provider/item_provider.dart';
 import 'package:srmthon/provider/review_cart_provider.dart';
 import 'package:srmthon/routes.dart';
@@ -10,8 +10,20 @@ import 'package:srmthon/screens/login_view.dart';
 import 'package:srmthon/screens/medical_view.dart';
 import 'package:srmthon/screens/splash_view.dart';
 import 'firebase_options.dart';
+import 'notificationservice/local_notification_service.dart';
+import 'package:provider/provider.dart';
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  LocalNotificationService.initialize();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: "SRMthon",

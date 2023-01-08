@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:srmthon/global.dart';
-import 'package:srmthon/screens/admin_panel.dart';
 
 import 'home_view.dart';
 
@@ -122,37 +121,19 @@ class _LoginViewState extends State<LoginView> {
                               onPressed: () async {
                                 if (formkey.currentState!.validate()) {
                                   try {
-                                    if (emailController.text ==
-                                        "as4533@srmist.edu.in") {
-                                      await FirebaseAuth.instance
-                                          .signInWithEmailAndPassword(
-                                              email: emailController.text,
-                                              password: passwordController.text)
-                                          .then((uid) => {
-                                                Fluttertoast.showToast(
-                                                    msg: "Login Successful"),
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AdminPanel()))
-                                              });
-                                    } else {
-                                      await FirebaseAuth.instance
-                                          .signInWithEmailAndPassword(
-                                              email: emailController.text,
-                                              password: passwordController.text)
-                                          .then((uid) => {
-                                                Fluttertoast.showToast(
-                                                    msg: "Login Successful"),
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    HomeView()))
-                                              });
-                                    }
+                                    await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text)
+                                        .then((uid) => {
+                                              Fluttertoast.showToast(
+                                                  msg: "Login Successful"),
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeView()))
+                                            });
                                   } catch (e) {
                                     Fluttertoast.showToast(
                                         msg: "Enter Correct User Credentials");
