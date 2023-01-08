@@ -20,7 +20,7 @@ class _RestViewState extends State<RestView> {
   @override
   Widget _buildItem(context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.black),
+      decoration: BoxDecoration(color: Colors.transparent),
       child: Column(
           children: itemProvider.getItemDataList.map(
         (itemData) {

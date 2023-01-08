@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,9 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:srmthon/models/user_model.dart';
 import 'package:srmthon/routes.dart';
 import 'package:srmthon/screens/profile_view.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:srmthon/spinner.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+dynamic color = Color.fromARGB(255, 48, 255, 1);
 
 class MessView extends StatefulWidget {
   const MessView({super.key});
@@ -26,6 +30,8 @@ class _MessViewState extends State<MessView> {
       FirebaseFirestore.instance.collection('messmenu');
   final CollectionReference userref =
       FirebaseFirestore.instance.collection('users');
+  final _realtimedatabase = FirebaseDatabase.instance.refFromURL(
+      "https://srmthon-default-rtdb.asia-southeast1.firebasedatabase.app");
   final Uri _evarsity = Uri.parse('https://evarsity.srmist.edu.in/srmsip/');
   final Uri _pass = Uri.parse('https://www.srmimthostel.net/olms/');
   final Uri _grievances = Uri.parse('http://srmupmaintenance.in/maintenance');
@@ -33,9 +39,27 @@ class _MessViewState extends State<MessView> {
   @override
   void initState() {
     super.initState();
+    _activateListner();
     userref.doc(user!.uid).get().then((value) {
       this.currentuser = UserModel.fromMap(value.data());
       setState(() {});
+    });
+  }
+
+  _activateListner() {
+    _realtimedatabase.child('objectcount/count').onValue.listen((event) {
+      final dynamic noOfPeople = event.snapshot.value;
+      setState(() {
+        if (noOfPeople as int > 3) {
+          setState(() {
+            color = Color.fromARGB(255, 255, 0, 0);
+          });
+        } else {
+          setState(() {
+            color = Color.fromARGB(255, 48, 255, 1);
+          });
+        }
+      });
     });
   }
 
@@ -46,6 +70,15 @@ class _MessViewState extends State<MessView> {
           appBar: AppBar(
             backgroundColor: Color.fromARGB(255, 12, 77, 162),
             title: Text("SRM - Mess"),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CircleAvatar(
+                  backgroundColor: color,
+                  radius: 10,
+                ),
+              )
+            ],
           ),
           drawer: Drawer(
             backgroundColor: Color.fromARGB(255, 195, 201, 215),

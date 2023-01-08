@@ -26,6 +26,7 @@ class _ItemState extends State<Item> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Color.fromARGB(255, 195, 201, 215),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
         child: Card(
